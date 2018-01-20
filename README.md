@@ -1,6 +1,6 @@
 # googleAnalyticsReports
 
-The goal of googleAnalyticsReports is to clean data from GA API before plotting. 
+The goal of googleAnalyticsReports is to clean data from GA API and generate some standard plots for you.
 
 This package expects that the user already has data from GA, and especially, that this data has a column: `sourceMedium` to work on. 
 
