@@ -3,15 +3,20 @@
 #' Cleans all source inputs from GA API.
 #' @param data a data frame from GA API. It must contain the column: ga:sourceMedium,
 #' as the package works with this column to generate the ouputs.
-#' @param language Choose a language for your final_source column outputs.
+#' @param language Choose a language for your sources column outputs.
 #' Available languages: en, es, fr. More to add in the near future.
+#' @import dplyr
 #' @importFrom tidyr separate
 #' @importFrom magrittr %>%
 #' @examples ga_clean_data(my_data, language="es")
-#' @return The function returns the data frame with a new final_source column with correct output ready to plot.
+#' @return The function returns the data frame with a new sources column with correct output ready to plot.
 #' @export
 
-ga_clean_data <- function(data, language = "en") {
+ga_clean_data <- function(data, language = "en", remove_spam = TRUE) {
+
+  data$sourceMedium <- sub('.*www.', "", gadata$sourceMedium)
+
+  data$month <- lubridate::month(data$date, label = T)
 
   data <- data %>%
     separate(sourceMedium, into = c("source", "medium"), sep = "\\/")
@@ -32,7 +37,7 @@ ga_clean_data <- function(data, language = "en") {
   data$source <- trimws(data$source, which = "both")
 
 
-  data$fuente <- NA
+  data$sources <- NA
 
   for (i in 1:nrow(data)) {
 
@@ -168,20 +173,20 @@ ga_clean_data <- function(data, language = "en") {
 
     if (data$source[i] == "(direct)") {
       if (language == "en") {
-        data$fuente[i] <- "direct"
+        data$sources[i] <- "direct"
       }
       else if (language == "es") {
-        data$fuente[i] <- "directo"
+        data$sources[i] <- "directo"
       }
     }
 
 
     else if (referral.source | otros) {
       if (language == "en") {
-        data$fuente[i] <- "references"
+        data$sources[i] <- "references"
       }
       else if (language == "es") {
-        data$fuente[i] <- "referencias"
+        data$sources[i] <- "referencias"
       }
     }
 
@@ -189,10 +194,10 @@ ga_clean_data <- function(data, language = "en") {
     else if (data$medium[i] == "organic" |
              organic) {
       if (language == "en") {
-        data$fuente[i] <- "organic"
+        data$sources[i] <- "organic"
       }
       else if (language == "es") {
-        data$fuente[i] <- "organico"
+        data$sources[i] <- "organico"
       }
     }
 
@@ -200,10 +205,10 @@ ga_clean_data <- function(data, language = "en") {
              & adwords.medium) {
 
       if (language == "en") {
-        data$fuente[i] <- "adwords"
+        data$sources[i] <- "adwords"
       }
       else if (language == "es") {
-        data$fuente[i] <- "adwords"
+        data$sources[i] <- "adwords"
       }
     }
 
@@ -211,13 +216,13 @@ ga_clean_data <- function(data, language = "en") {
 
     else if (adsense) {
 
-      data$fuente[i] <- "adsense"
+      data$sources[i] <- "adsense"
     }
 
 
     else if (email.medium | email.source) {
 
-      data$fuente[i] <- "email"
+      data$sources[i] <- "email"
     }
 
 
@@ -225,35 +230,42 @@ ga_clean_data <- function(data, language = "en") {
     else if (redes.sociales) {
 
       if (language == "en") {
-        data$fuente[i] <- "social media"
+        data$sources[i] <- "social media"
       }
       else if (language == "es") {
-        data$fuente[i] <- "redes sociales"
+        data$sources[i] <- "redes sociales"
       }
 
     }
 
     else if (ritmo.romantica) {
 
-      data$fuente[i] <- "ritmo romantica"
+      data$sources[i] <- "ritmo romantica"
     }
 
 
     else if (prensmart) {
 
-      data$fuente[i] <- "prensmart"
+      data$sources[i] <- "prensmart"
 
     }
 
 
     else if (spam) {
 
-      data$fuente[i] <- "spam"
+      data$sources[i] <- "spam"
     }
 
     else {
-      data$fuente[i] <- "spam"
+      data$sources[i] <- "spam"
     }
+  }
+
+  if (remove_spam) {
+
+    data <- data %>%
+            filter(sources != "spam")
+
   }
 
   return(data)
