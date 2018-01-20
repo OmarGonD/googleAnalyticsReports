@@ -4,7 +4,40 @@ The goal of googleAnalyticsReports is to clean data from GA API and generate som
 
 This package expects that the user already has data from GA, and especially, that this data has a column: `sourceMedium` to work on. This means that in order tu clean the data, `sourceMedium` must be present as a dimension in the call to the API. 
 
-You could use the `googleAnalyticsR` from Mark Edmonson to make a call like the following to the `GA API`:
+# How to install googleAnalyticsReports?
+
+For the moment the package is only available in Github, you can install it with:
+
+```r 
+devtools::install_github("OmarGonD/googleAnalyticsReports")
+```
+
+The package comes with real data from a personal web page of mine for all 2017. To use it load it with:
+
+```r 
+library(googleAnalyticsReports)
+data(gadata)
+```
+
+After it's loaded you can start using the package like this:
+
+```r 
+
+a <- ga_clean_data(gadata)
+
+ga_sessions_per_month(a)
+
+```
+
+I suggest that you use the `googleAnalyticsR` from Mark Edmonson to make a call like the following to the `GA API`. 
+
+Install it with:
+
+```r 
+devtools::install_github("MarkEdmondson1234/googleAnalyticsR")
+```
+
+Make an API call like this: 
 
 ```r 
 
@@ -29,7 +62,7 @@ my_data <- google_analytics_4(my_id,
 
 
 
-##The main functions are:
+## googleAnalyticsReports main functions are:
 
 1. `ga_clean_data()`  #cleans the sourceMedium column 
 
