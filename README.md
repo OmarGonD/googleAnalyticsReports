@@ -12,7 +12,7 @@ For the moment the package is only available in Github, you can install it with:
 devtools::install_github("OmarGonD/googleAnalyticsReports")
 ```
 
-The package comes with real data from a personal web page of mine for all 2017. To use it load it with:
+For testing, the package comes with real data from a personal web page of mine for all 2017. To use it load it with:
 
 ```r 
 library(googleAnalyticsReports)
@@ -29,7 +29,7 @@ ga_sessions_per_month(a)
 
 ```
 
-I suggest that you use the `googleAnalyticsR` from Mark Edmonson to make a call like the following to the `GA API`. 
+To use your own data I suggest that you use the `googleAnalyticsR` from Mark Edmonson to make a call like the following to the `GA API`. 
 
 Install it with:
 
