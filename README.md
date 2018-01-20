@@ -2,7 +2,7 @@
 
 The goal of googleAnalyticsReports is to clean data from GA API and generate some standard plots for you.
 
-This package expects that the user already has data from GA, and especially, that this data has a column: `sourceMedium` to work on. 
+This package expects that the user already has data from GA, and especially, that this data has a column: `sourceMedium` to work on. This means that in order tu clean the data, `sourceMedium` must be present as a dimension in the call to the API. 
 
 You could use the `googleAnalyticsR` from Mark Edmonson to make a call like the following to the `GA API`:
 
