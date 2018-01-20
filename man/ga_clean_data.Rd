@@ -4,17 +4,17 @@
 \alias{ga_clean_data}
 \title{Cleans GA Data}
 \usage{
-ga_clean_data(data, language = "en")
+ga_clean_data(data, language = "en", remove_spam = TRUE)
 }
 \arguments{
 \item{data}{a data frame from GA API. It must contain the column: ga:sourceMedium,
 as the package works with this column to generate the ouputs.}
 
-\item{language}{Choose a language for your final_source column outputs.
+\item{language}{Choose a language for your sources column outputs.
 Available languages: en, es, fr. More to add in the near future.}
 }
 \value{
-The function returns the data frame with a new final_source column with correct output ready to plot.
+The function returns the data frame with a new sources column with correct output ready to plot.
 }
 \description{
 Cleans all source inputs from GA API.
