@@ -10,13 +10,14 @@
 #' @import hrbrthemes
 #' @import scales
 #' @importFrom dplyr group_by summarise
+#' @importFrom forcats fct_reorder
 #' @importFrom magrittr %>%
 #' @examples ga_clean_data(my_data, language="es")
 #' @return The function returns the data frame with a new sources column with correct output ready to plot.
 #' @export
 
 ga_sessions_per_month_s <- function(data, title = "Sessions by source per month", x_title = "month", y_title = "sessions",
-                                  label_size = 4) {
+                                  label_size = 3) {
 
   data$date <- as.Date(data$date)
 
@@ -25,6 +26,9 @@ ga_sessions_per_month_s <- function(data, title = "Sessions by source per month"
   data <- data %>%
     group_by(month, sources) %>%
     summarise(sessions= sum(sessions))
+
+
+  data$sources <- fct_reorder(data$sources, data$sessions)
 
 
   monthly_sessions_s <- ggplot(data, aes(x=sources, y = sessions, label = sessions)) +
@@ -43,7 +47,8 @@ ga_sessions_per_month_s <- function(data, title = "Sessions by source per month"
                                       hjust = 0.5, vjust = 0.5)) +
     scale_y_continuous(labels = comma) +
     coord_flip() +
-    geom_text(hjust = 0.5, size = label_size) +
+    geom_text(hjust = -0.4, size = label_size) +
+    expand_limits(y = max(data$sessions) + round(max(data$sessions)*50/100)) +
     theme_ipsum()
 
   return(monthly_sessions_s)
