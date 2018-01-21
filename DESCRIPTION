@@ -16,5 +16,6 @@ Imports:
   ggplot2,
   lubridate,
   scales,
-  hrbrthemes
+  hrbrthemes,
+  forcats
 RoxygenNote: 6.0.1
