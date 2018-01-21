@@ -29,6 +29,7 @@ ga_sessions_per_month <- function(data, title = "Sessions per month", x_title = 
     summarise(sessions= sum(sessions))
 
 
+
   monthly_sessions <- ggplot(data, aes(x=month, y = sessions, label = sessions)) +
     geom_bar(stat = "identity", fill = bars_fill, colour = "white") +
     labs(title = title,
@@ -43,7 +44,8 @@ ga_sessions_per_month <- function(data, title = "Sessions per month", x_title = 
           strip.text.x = element_text(size = 22,
                                       hjust = 0.5, vjust = 0.5)) +
     scale_y_continuous(labels = comma) +
-    geom_text(vjust = -0.5, size = label_size) +
+    geom_text(vjust = -0.4, size = label_size) +
+    expand_limits(y = max(data$sessions) + round(max(data$sessions)*50/100)) +
     theme_ipsum()
 
     return(monthly_sessions)
