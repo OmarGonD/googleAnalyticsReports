@@ -32,8 +32,6 @@ ga_heatmap_sessions <- function(data, title = "Weekday sessions by hour", x_titl
   }
 
 
-  data$date <- as.Date(data$date)
-
   data$day <- weekdays(data$date, abbreviate = T)
 
   if (grepl("LC_CTYPE=es", Sys.getlocale())) {
