@@ -23,7 +23,7 @@
 
 
 ga_heatmap_sessions <- function(data, title = "Weekday sessions by hour", x_title = "hour", y_title = "",
-                                    legend_label = "sessions", label_size = 3) {
+                                    legend_title = "sessions", label_size = 3) {
 
 
   allHours <- function(data) {
@@ -62,7 +62,7 @@ ga_heatmap_sessions <- function(data, title = "Weekday sessions by hour", x_titl
 
   gg <- ggplot(data, aes(x=hour, y=day, fill=sessions))
   gg <- gg + geom_tile(color="white", size=0.1)
-  gg <- gg + scale_fill_viridis(name= paste("#", legend_label), label=comma)
+  gg <- gg + scale_fill_viridis(name= paste("#", legend_title), label=comma)
   gg <- gg + coord_equal()
   gg <- gg + labs(x=x_title, y=y_title, title=title)
   gg <- gg + theme_tufte(base_family="Helvetica")

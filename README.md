@@ -1,10 +1,15 @@
 # googleAnalyticsReports
 
+</br>
+
 The goal of googleAnalyticsReports is to clean data from GA API and generate some standard plots for you.
 
 This package expects that the user already has data from GA, and especially, that this data has a column: `sourceMedium` to work on. This means that in order tu clean the data, `sourceMedium` must be present as a dimension in the call to the API. 
 
 # How to install googleAnalyticsReports?
+
+</br>
+
 
 For the moment the package is only available in Github, you can install it with:
 
@@ -64,13 +69,18 @@ my_data <- google_analytics_4(my_id,
 
 ## googleAnalyticsReports main functions are:
 
+</br>
+
+
 1. `ga_clean_data()`  #cleans the sourceMedium column 
 
-1. `ga_sessions_*` functions to generate plots using ggplot2 as plotting library, for example: `ga_sessions_per_month` and `ga_sessions_per_month_s` (this not only returns the total sessions by month but also lets you identify the right sources for them).
+2. `ga_sessions_*` functions to generate plots using ggplot2 as plotting library, for example: `ga_sessions_per_month` and `ga_sessions_per_month_s` (this not only returns the total sessions by month but also lets you identify the right sources for them).
 
 
 
 ## Cleaning Google Analytics Data
+
+</br>
 
 This is a basic example which shows you how to clean the sourceMedium column using: `ga_clean_data()`.
 
@@ -109,6 +119,9 @@ head(cleaned_data , n=6)
 
 #Sessions per month
 
+</br>
+
+
 After cleaning the data with you can call `ga_sessions_per_month()` to generate a graph showing the total sessions by month. 
 
 Thi function accepts these arguments:
@@ -119,10 +132,13 @@ Thi function accepts these arguments:
 * label_size: size of the label for each column.
 * bars_fill: should the RGB color desired for the bars.
 
-![Caption for the picture.](images/sessions_per_month.png)
+![](images/sessions_per_month.png)
 
 
 #Sessions by source per month
+
+</br>
+
 
 `ga_sessions_per_month_s()` plots all sessions by month and by source. The fill of the bars is the variable `sources` from the data frame you passed as argument. This data frame should have been cleaned with `ga_clean_data()`.
 
@@ -136,5 +152,55 @@ Thi function accepts these arguments:
 * label_size: size of the label for each column.
 
 
-![Caption for the picture.](images/sessions_by_source_per_month.png)
+![](images/sessions_by_source_per_month.png)
 
+
+#Heatmap of sessions by day of week and hour
+
+</br>
+
+
+You can get a heatmap by running:
+
+</br>
+
+
+```r
+
+library(googleAnalyticsR)
+library(googleAnalyticsReports)
+
+
+ga_auth()
+
+my_accounts <- ga_account_list()
+View(my_accounts)
+
+my_id <- 88090999 #use your view id here 
+
+start_date <- "2017-01-01"
+final_date <- "2018-01-31"
+
+df <- google_analytics_4(my_id, 
+                         date_range = c(start_date, final_date),
+                         metrics = "sessions",
+                         dimensions = c("date", "hour", "sourceMedium"),
+                         max=100000)
+
+
+ga_heatmap_sessions(df, title = "Sesiones por día de la semana y hora",
+                    legend_title = "Sesiones")
+                    
+```
+
+</br>
+</br>
+
+Thi function accepts these arguments:
+
+* title: title of the plot
+* x_title: title for the x axis. Defaults to blank.
+* y_title: title for the y axis.
+* legend_title: title for the legend.
+
+![](images/sessions_heatmap.png)
