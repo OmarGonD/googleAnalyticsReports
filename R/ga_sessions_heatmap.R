@@ -45,13 +45,15 @@ ga_heatmap_sessions <- function(data, title = "Weekday sessions by hour", x_titl
       data$day <- factor(data$day, levels= c("Sun", "Sat", "Fri", "Thu", "Wed",
                                                      "Tue", "Mon"))
 
-
   }
 
   data <- data %>%
     mutate(hour = as.numeric(hour)) %>%
     group_by(day, hour) %>%
-    do(allHours(.))
+    do(allHours(.)) %>%
+    summarise(sessions = sum(sessions))
+
+
 
 
   # data$month <- factor(data$month, levels = c("nov", "dec"), ordered = T)
