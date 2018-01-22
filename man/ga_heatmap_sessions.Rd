@@ -5,7 +5,7 @@
 \title{GA Monthly heatmap graphic - sessions}
 \usage{
 ga_heatmap_sessions(data, title = "Weekday sessions by hour",
-  x_title = "hour", y_title = "day of week", legend_label = "sessions",
+  x_title = "hour", y_title = "", legend_label = "sessions",
   label_size = 3)
 }
 \arguments{
