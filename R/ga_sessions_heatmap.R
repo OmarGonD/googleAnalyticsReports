@@ -60,7 +60,7 @@ ga_heatmap_sessions <- function(data, title = "Weekday sessions by hour", x_titl
 
 
 
-  gg <- ggplot(data, aes(x=hour, y=day, fill=sessions, label=sessions))
+  gg <- ggplot(data, aes(x=hour, y=day, fill=sessions))
   gg <- gg + geom_tile(color="white", size=0.1)
   gg <- gg + scale_fill_viridis(name= paste("#", legend_label), label=comma)
   gg <- gg + coord_equal()
@@ -70,7 +70,7 @@ ga_heatmap_sessions <- function(data, title = "Weekday sessions by hour", x_titl
   gg <- gg + theme(axis.ticks=element_blank())
   gg <- gg + theme(axis.text=element_text(size=12))
   gg <- gg + theme(legend.title=element_text(size=10))
-  gg <- gg + theme(legend.text=element_text(size=8)) + geom_text()
+  gg <- gg + theme(legend.text=element_text(size=8))
   gg
 
   return(gg)
