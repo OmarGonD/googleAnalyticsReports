@@ -22,7 +22,7 @@
 
 
 
-ga_heatmap_sessions <- function(data, title = "Weekday sessions by hour", x_title = "hour", y_title = "",
+ga_sessions_heatmap <- function(data, title = "Weekday sessions by hour", x_title = "hour", y_title = "",
                                     legend_title = "sessions", label_size = 3) {
 
 
