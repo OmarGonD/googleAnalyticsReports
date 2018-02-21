@@ -194,8 +194,16 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
     }
 
 
-    else if (data$medium[i] == "organic" |
-             organic) {
+    else if (data$medium[i] == "organic") {
+      if (language == "en") {
+        data$sources[i] <- "organic"
+      }
+      else if (language == "es") {
+        data$sources[i] <- "organico"
+      }
+    }
+
+    else if (organic) {
       if (language == "en") {
         data$sources[i] <- "organic"
       }

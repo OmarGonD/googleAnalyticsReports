@@ -26,7 +26,7 @@ ga_get_sessions <- function(view_id, start_date = "2017-01-01",
 
   ga_auth()
 
-  data <- google_analytics_4(my_id,
+  data <- google_analytics(my_id,
                            date_range = c(start_date, final_date),
                            metrics = "sessions",
                            dimensions = c("date", "hour", "deviceCategory", "sourceMedium"),
