@@ -91,9 +91,26 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
                              ".*google\\.com\\.br.*",
                              ".*google\\.com\\.bo.*",
                              ".*google\\.com\\.ar.*",
+                             ".*google\\.com\\.es.*",
                              ".*google\\.com.*",
                              "sodimac.com.pe",
                              "falabella.com.pe",
+                             "larepublica.pe",
+                             "elpopular.pe",
+                             ".*toshiba.com",
+                             "visa-infinite.com",
+                             "ripley.com.pe",
+                             "cyberdays.net.pe",
+                             "nikonperu.com",
+                             "elpais.com",
+                             "latina.pe",
+                             "terra.com.pe",
+                             "los40.radio.es",
+                             "gestion.pe",
+                             "peruhardware.net",
+                             "peru21.pe",
+                             "samsung.com",
+                             "hyundaielectronics.com.pe",
                              "beneficios.gruporomero.com.pe",
                              "somosdata.net","shop.lenovo.com",
                              "canonexperience.pe", "lg.com", "deperu.com"
@@ -101,9 +118,11 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
     collapse="|")
 
 
+    onesignal.path <- ".*OneSignal.*"
+
 
     redes.sociales.path <- paste(c(".*fac?e.*",
-                                   ".*twitt?.*","tw.*", "pp.*"),
+                                   ".*twitt?.*","tw.*", "pp.*", ".*instagram.*"),
                                  collapse="|")
 
 
@@ -170,6 +189,13 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
 
     organic <- grepl(organic.path, data$source[i], ignore.case = T)
 
+    organic.medium <- grepl("organic", data$medium[i],
+                             ignore.case = T)
+
+
+    onesignal.source <- grepl(onesignal.path,data$source[i], ignore.case = T)
+
+
 
 
     otros <- grepl(otros.path, data$medium[i], ignore.case = T)
@@ -200,23 +226,31 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
     }
 
 
-    #else if (data$medium[i] == "organic") {
-     # if (language == "en") {
-      #  data$sources[i] <- "organic"
-      #}
-      #else if (language == "es") {
-       # data$sources[i] <- "organico"
-      #}
-    #}
+    else if (onesignal.source) {
+      if (language == "en") {
+        data$sources[i] <- "onesignal"
+      }
+      else if (language == "es") {
+        data$sources[i] <- "onesignal"
+      }
+    }
 
-    #else if (organic) {
-    #  if (language == "en") {
-    #    data$sources[i] <- "organic"
-    #  }
-    #  else if (language == "es") {
-    #    data$sources[i] <- "organico"
-    #  }
-    #}
+
+    else if (organic.medium) {
+
+      if (language == "en") {
+        data$sources[i] <- "organic"
+      }
+      else if (language == "es") {
+        data$sources[i] <- "organico"
+      }
+    }
+
+    else if (organic) {
+
+      data$sources[i] <- "organic"
+
+    }
 
     else if (adwords.source
              & adwords.medium) {
