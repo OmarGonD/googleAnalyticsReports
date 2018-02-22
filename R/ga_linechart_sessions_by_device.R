@@ -29,7 +29,7 @@ ga_lineschart_sessions_by_device <- function(view_id, title = "Weekday sessions 
 
   ga_auth()
 
-  data <- google_analytics_4(viewId = view_id,
+  data <- google_analytics(viewId = view_id,
                                 date_range = c(start_date, end_date),
                                 metrics = "sessions",
                                 dimensions = c("date","deviceCategory"),

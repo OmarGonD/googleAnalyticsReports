@@ -15,9 +15,15 @@
 ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
 
 
-  data$sourceMedium <- sub('.*www.', "", data$sourceMedium)
+  #data$sourceMedium <- sub('.*www.', "", data$sourceMedium)
+
+  #data$sourceMedium <- gsub("(www\\.$|\\.com.*)", "", data$sourceMedium)
+
+  data$sourceMedium <- sub("^(.+)www\\.(.+)\\.com.+","\\1\\2", data$sourceMedium)
 
   data$month <- lubridate::month(data$date, label = T)
+
+
 
   data <- data %>%
     separate(sourceMedium, into = c("source", "medium"), sep = "\\/")
@@ -194,23 +200,23 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
     }
 
 
-    else if (data$medium[i] == "organic") {
-      if (language == "en") {
-        data$sources[i] <- "organic"
-      }
-      else if (language == "es") {
-        data$sources[i] <- "organico"
-      }
-    }
+    #else if (data$medium[i] == "organic") {
+     # if (language == "en") {
+      #  data$sources[i] <- "organic"
+      #}
+      #else if (language == "es") {
+       # data$sources[i] <- "organico"
+      #}
+    #}
 
-    else if (organic) {
-      if (language == "en") {
-        data$sources[i] <- "organic"
-      }
-      else if (language == "es") {
-        data$sources[i] <- "organico"
-      }
-    }
+    #else if (organic) {
+    #  if (language == "en") {
+    #    data$sources[i] <- "organic"
+    #  }
+    #  else if (language == "es") {
+    #    data$sources[i] <- "organico"
+    #  }
+    #}
 
     else if (adwords.source
              & adwords.medium) {
