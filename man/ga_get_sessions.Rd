@@ -4,8 +4,7 @@
 \alias{ga_get_sessions}
 \title{GA Monthly linechart graphic - sessions}
 \usage{
-ga_get_sessions(view_id, start_date = "2018-01-01",
-  final_date = "2018-01-31", language = "en")
+ga_get_sessions(view_id, start_date, final_date, language = "en")
 }
 \arguments{
 \item{language}{Choose a language for your sources column outputs.

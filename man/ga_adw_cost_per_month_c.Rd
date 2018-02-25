@@ -4,8 +4,9 @@
 \alias{ga_adw_cost_per_month_c}
 \title{GA Monthly sessions graphic}
 \usage{
-ga_adw_cost_per_month_c(data, title, subtitle, x_title, y_title, year = 2018,
-  label_size = 3, top_n = 5, y_axis_size = 16)
+ga_adw_cost_per_month_c(data, adnetwork_selected, title, subtitle, x_title,
+  y_title, year_selected = 2018, label_size = 3, top_n = 5,
+  y_axis_size = 16)
 }
 \arguments{
 \item{data}{a data frame from GA API. It must contain the column: ga:sourceMedium,
