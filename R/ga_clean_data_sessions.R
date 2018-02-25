@@ -23,9 +23,9 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
 
   data$date <- as.Date(data$date)
 
-  data$anio <- lubridate::year(data$date)
+  data$year <- lubridate::year(data$date)
 
-  data$mes <- lubridate::month(data$date, label = T)
+  data$month <- lubridate::month(data$date, label = T)
 
 
 

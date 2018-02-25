@@ -20,8 +20,8 @@
 
 
 
-ga_get_adw_costs_by_campaign <- function(view_id, start_date = "2018-01-01",
-                                        final_date = "2018-01-31", language = "en") {
+ga_get_adw_costs_by_campaign <- function(view_id, start_date,
+                                        final_date, language = "en") {
 
 
   ga_auth()

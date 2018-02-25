@@ -19,9 +19,9 @@ ga_clean_data_pageviews <- function(data, language = "en", remove_spam = TRUE) {
 
   data$date <- as.Date(data$date)
 
-  data$anio <- lubridate::year(data$date, label = T)
+  data$year <- lubridate::year(data$date, label = T)
 
-  data$mes <- lubridate::month(data$date, label = T)
+  data$month <- lubridate::month(data$date, label = T)
 
   data <- data %>%
     separate(sourceMedium, into = c("source", "medium"), sep = "\\/")

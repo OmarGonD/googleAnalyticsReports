@@ -14,8 +14,8 @@
 
 
 
-ga_get_pageviews <- function(view_id, start_date = start_date,
-                             final_date = final_date) {
+ga_get_pageviews <- function(view_id, start_date,
+                             final_date) {
 
 
   gar_auth()
