@@ -26,35 +26,41 @@ ga_get_sessions_by_campaign <- function(view_id, start_date,
 
   ga_auth()
 
-  if(imp_and_clicks = F) {
+  if(imp_and_clicks) {
 
-      message("#===================#")
-      message("Returns data with only sessions, but also hour and deviceCategory")
-      message("#===================#")
+    message("#===================#")
+    message("Returns data with not only sessions but impressions and adClicks")
+    message("#===================#")
 
-      data <- google_analytics(view_id,
-                                 date_range = c(start_date, final_date),
-                                 metrics = c("sessions"),
-                                 dimensions = c("date","hour", "deviceCategory",
-                                                "sourceMedium", "campaign", "adGroup"),
-                                 anti_sample = TRUE)
+    data <- google_analytics(view_id,
+                             date_range = c(start_date, final_date),
+                             metrics = c("impressions", "adClicks","sessions"),
+                             dimensions = c("date", "sourceMedium","adDistributionNetwork",
+                                            "campaign", "adGroup", "adDisplayUrl", "adDestinationUrl",
+                                            "adMatchedQuery", "adKeywordMatchType"),
+                             anti_sample = TRUE)
 
 
   } else {
 
-      message("#===================#")
-      message("Returns data with not only sessions but impressions and adClicks")
-      message("#===================#")
 
-      data <- google_analytics(view_id,
-                              date_range = c(start_date, final_date),
-                              metrics = c("impressions", "adClicks","sessions"),
-                              dimensions = c("date", "sourceMedium","adDistributionNetwork",
-                                             "campaign", "adGroup", "adDisplayUrl", "adDestinationUrl",
-                                             "adMatchedQuery", "adKeywordMatchType"),
-                              anti_sample = TRUE)
+    message("#===================#")
+    message("Returns data with only sessions, but also hour and deviceCategory")
+    message("#===================#")
+
+    data <- google_analytics(view_id,
+                             date_range = c(start_date, final_date),
+                             metrics = c("sessions"),
+                             dimensions = c("date","hour", "deviceCategory",
+                                            "sourceMedium", "campaign", "adGroup"),
+                             anti_sample = TRUE)
+
+
 
   }
+
+
+
 
 
   data <- googleAnalyticsReports::ga_clean_data_sessions(data, language)
