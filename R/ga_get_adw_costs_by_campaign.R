@@ -59,7 +59,7 @@ ga_get_adw_costs_by_campaign <- function(view_id, start_date,
 
   data$campaign <- gsub("LaCuracao - Search - ", "", data$campaign)
 
-  data$campaign <- trimws(data$campaign, wich = 'both')
+  data$campaign <- trimws(data$campaign, which = 'both')
 
   ## Cleaning adNetWorks
 
