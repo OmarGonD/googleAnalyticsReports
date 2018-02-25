@@ -16,6 +16,7 @@
 #' @return The function returns the data frame with a new sources column with correct output ready to plot.
 #' @export
 
+
 ga_adw_cost_linechart <- function(data, title, x_title = "fecha", y_title = "inversión",
                                   label_size = 3, by_adnetwork = F) {
 
