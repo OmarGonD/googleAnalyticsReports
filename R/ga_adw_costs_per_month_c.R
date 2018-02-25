@@ -16,49 +16,50 @@
 #' @return The function returns the data frame with a new sources column with correct output ready to plot.
 #' @export
 
-ga_adw_cost_per_month_c <- function(data, title, subtitle, x_title, y_title, year = 2018,
+ga_adw_cost_per_month_c <- function(data, adnetwork_selected, title, subtitle, x_title, y_title,
+                                    year_selected = 2018,
                                     label_size = 3, top_n = 5, y_axis_size = 16) {
 
 
 
   # data$month <- factor(data$month, levels = c("nov", "dec"), ordered = T)
 
-  subtitle <- paste("Año:", year)
+  subtitle <- paste("Red publicitaria:", adnetwork_selected)
 
-  data_top_n <- data %>%
+
+
+  data_top_n <- curacao_inversion_adwords %>%
     group_by(year, month, adNetwork, campaign) %>%
     summarise(adCost= sum(adCost)) %>%
-    filter(year == year) %>%
+    filter(adNetwork == adnetwork_selected) %>%
+    filter(year == year_selected) %>%
     arrange(-adCost) %>%
     top_n(top_n)
+
+
 
 
   data_top_n$campaign <- fct_reorder(data_top_n$campaign, data_top_n$adCost)
 
 
   monthly_adw_cost_c <- ggplot(data_top_n, aes(x=campaign, y = adCost, label = comma(round(adCost, digits = 2)))) +
-    geom_bar(stat = "identity", aes(fill = campaign)) +
-    #facet_grid(mes ~ adNetwork) +
-    facet_wrap(adNetwork ~ month, scales = "free_y", ncol = 1) +
-    labs(title = title, subtitle = subtitle,
-         x = x_title, y = y_title) +
-    # theme(axis.text.x = element_text(colour="grey20",size=18,hjust=.5,vjust=.5,face="plain"),
-    #       axis.text.y = element_text(colour="grey20",size=y_axis_size,hjust=1,vjust=0,face="plain"),
-    #       axis.title.x = element_text(colour="grey20",size=12,angle=0,hjust=.5,vjust=0,face="plain"),
-    #       axis.title.y = element_text(colour="grey20",size=12,angle=90,hjust=.5,vjust=.5,face="plain"),
-    #       plot.title = element_text(face = "bold", vjust=2, size = 22),
-    #       legend.title = element_text(colour="grey40", size=8, face="bold"),
-    #       legend.text = element_text(colour="grey10", size=12, face="bold"),
-    #       strip.text.x = element_text(size = 22,
-    #                                   hjust = 0.5, vjust = 0.5)) +
-    scale_y_continuous(labels = comma) +
-    coord_flip() +
-    geom_text(hjust = -0.4, size = label_size) +
-    expand_limits(y = max(data_top_n$adCost) + round(max(data_top_n$adCost)*50/100)) +
-    theme_ipsum() +
-    theme(legend.position = 'none',
-          axis.text.y = element_text(colour="grey20",size=y_axis_size,hjust=1,vjust=0,face="plain"))
+                        geom_bar(stat = "identity", aes(fill = campaign)) +
+                        #facet_grid(month ~ adNetwork) +
+                        facet_wrap(year ~ month, scales = "free_y", ncol = 1) +
+                        labs(title = title, subtitle = subtitle,
+                             x = x_title, y = y_title) +
+                        scale_y_continuous(labels = comma) +
+                        coord_flip() +
+                        geom_text(hjust = -0.4, size = label_size) +
+                        expand_limits(y = max(data_top_n$adCost) + round(max(data_top_n$adCost)*50/100)) +
+                        theme_ipsum() +
+                        theme(legend.position = 'none',
+                              axis.text.y = element_text(colour="grey20",size=y_axis_size,hjust=1,vjust=0,face="plain"))
+
+
 
   return(monthly_adw_cost_c)
+
+
 
 }
