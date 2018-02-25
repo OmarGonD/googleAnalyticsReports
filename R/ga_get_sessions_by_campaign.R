@@ -59,7 +59,7 @@ ga_get_sessions_by_campaign <- function(view_id, start_date,
 
   data <- googleAnalyticsReports::ga_clean_data_sessions(data, language)
 
-  data <- googleAnalyticsReports::ga_clean_data_sessions_adnetwork(data)
+  data <- googleAnalyticsReports::ga_clean_data_adnetwork(data)
 
   return(data)
 
