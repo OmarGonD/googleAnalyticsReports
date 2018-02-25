@@ -12,15 +12,16 @@
 #' @return The function returns the data frame with a new sources column with correct output ready to plot.
 #' @export
 
-ga_clean_data_sessions_adnetwork <- function(data) {
+ga_clean_data_adnetwork <- function(data) {
 
 
   data$adNetwork <- ifelse(grepl("Google Search|Search partners",
                                  data$adDistributionNetwork), "Google Search", data$adDistributionNetwork)
 
 
+
   data$adNetwork <- ifelse(grepl("Content",
-                                 data$adDistributionNetwork), "Google Display", bb1$adNetwork)
+                                 data$adDistributionNetwork), "Google Display", data$adNetwork)
 
 
   return(data)

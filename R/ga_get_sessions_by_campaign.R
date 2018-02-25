@@ -21,12 +21,12 @@
 
 
 ga_get_sessions_by_campaign <- function(view_id, start_date,
-                            final_date, device_category = F, language = "en") {
+                            final_date, imp_and_clicks = F, language = "en") {
 
 
   ga_auth()
 
-  if(device_category) {
+  if(imp_and_clicks = F) {
 
       message("#===================#")
       message("Returns data with only sessions, but also hour and deviceCategory")
