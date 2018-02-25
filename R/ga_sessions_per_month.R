@@ -15,25 +15,25 @@
 #' @return The function returns the data frame with a new sources column with correct output ready to plot.
 #' @export
 
-ga_sessions_per_month <- function(data, title = "Sessions per month", x_title = "month", y_title = "sessions",
+ga_sessions_per_month <- function(data, title, subtitle, x_title, y_title,
                                   label_size = 4, bars_fill = "#F22439") {
 
-  data$date <- as.Date(data$date)
 
-  data$month <- lubridate::month(data$date, label = T)
 
   # data$month <- factor(data$month, levels = c("nov", "dec"), ordered = T)
 
   data <- data %>%
-    group_by(month) %>%
+    group_by(year, month) %>%
     summarise(sessions= sum(sessions))
 
 
 
-  monthly_sessions <- ggplot(data, aes(x=month, y = sessions, label = sessions)) +
+  monthly_sessions <- ggplot(data, aes(x=month, y = sessions, label = comma(sessions))) +
     geom_bar(stat = "identity", fill = bars_fill, colour = "white") +
-    labs(title = title,
+    labs(title = title, subtitle = subtitle,
          x = x_title, y = y_title) +
+    facet_wrap(~ year, scales = "free_y", ncol = 1) +
+    #facet_grid(. ~ anio) +
     theme(axis.text.x = element_text(colour="grey20",size=18,hjust=.5,vjust=.5,face="plain"),
           axis.text.y = element_text(colour="grey20",size=18,hjust=1,vjust=0,face="plain"),
           axis.title.x = element_text(colour="grey20",size=12,angle=0,hjust=.5,vjust=0,face="plain"),

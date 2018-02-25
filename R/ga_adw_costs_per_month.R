@@ -10,33 +10,30 @@
 #' @import hrbrthemes
 #' @import scales
 #' @importFrom dplyr group_by summarise
-#' @importFrom forcats fct_reorder
 #' @importFrom magrittr %>%
 #' @examples ga_clean_data(my_data, language="es")
 #' @return The function returns the data frame with a new sources column with correct output ready to plot.
 #' @export
 
-ga_sessions_per_month_s <- function(data, title, subtitle, x_title, y_title, year,
-                                  label_size = 3) {
+ga_adw_costs_per_month <- function(data, title, subtitle, x_title, y_title,
+                                  label_size = 4, bars_fill = "#FFBB33") {
 
 
 
   # data$month <- factor(data$month, levels = c("nov", "dec"), ordered = T)
 
   data <- data %>%
-    group_by(year, month, sources) %>%
-    filter(year == year) %>%
-    summarise(sessions= sum(sessions))
+          group_by(year, month) %>%
+          summarise(adCost = sum(adCost))
 
 
-  data$sources <- fct_reorder(data$sources, data$sessions)
 
-
-  monthly_sessions_s <- ggplot(data, aes(x=sources, y = sessions, label = comma(sessions))) +
-    geom_bar(stat = "identity", aes(fill = sources)) +
-    facet_wrap(~ month) +
-    labs(title = title,
+  monthly_costs <- ggplot(data, aes(x=month, y = adCost, label = comma(adCost))) +
+    geom_bar(stat = "identity", fill = bars_fill, colour = "white") +
+    labs(title = title, subtitle = subtitle,
          x = x_title, y = y_title) +
+    facet_wrap(~ year, scales = "free_y", ncol = 1) +
+    #facet_grid(. ~ anio) +
     theme(axis.text.x = element_text(colour="grey20",size=18,hjust=.5,vjust=.5,face="plain"),
           axis.text.y = element_text(colour="grey20",size=18,hjust=1,vjust=0,face="plain"),
           axis.title.x = element_text(colour="grey20",size=12,angle=0,hjust=.5,vjust=0,face="plain"),
@@ -47,10 +44,10 @@ ga_sessions_per_month_s <- function(data, title, subtitle, x_title, y_title, yea
           strip.text.x = element_text(size = 22,
                                       hjust = 0.5, vjust = 0.5)) +
     scale_y_continuous(labels = comma) +
-    coord_flip() +
-    geom_text(hjust = -0.4, size = label_size) +
-    expand_limits(y = max(data$sessions) + round(max(data$sessions)*50/100)) +
+    geom_text(vjust = -0.4, size = label_size) +
+    expand_limits(y = max(data$adCost) + round(max(data$adCost)*50/100)) +
     theme_ipsum()
 
-  return(monthly_sessions_s)
+  return(monthly_costs)
+
 }

@@ -23,7 +23,7 @@
 
 
 ga_sessions_heatmap <- function(data, title = "Weekday sessions by hour", x_title = "hour", y_title = "",
-                                    legend_title = "sessions", label_size = 3) {
+                                    legend_title = "sessions", source = 'all', label_size = 3) {
 
 
   allHours <- function(data) {
@@ -47,11 +47,25 @@ ga_sessions_heatmap <- function(data, title = "Weekday sessions by hour", x_titl
 
   }
 
-  data <- data %>%
-    mutate(hour = as.numeric(hour)) %>%
-    group_by(day, hour) %>%
-    do(allHours(.)) %>%
-    summarise(sessions = sum(sessions))
+
+  if(source == 'all') {
+
+    data <- data %>%
+      mutate(hour = as.numeric(hour)) %>%
+      group_by(day, hour) %>%
+      do(allHours(.)) %>%
+      summarise(sessions = sum(sessions))
+
+  } else {
+
+    data <- data %>%
+      filter(sources == source) %>%
+      mutate(hour = as.numeric(hour)) %>%
+      group_by(day, hour) %>%
+      do(allHours(.)) %>%
+      summarise(sessions = sum(sessions))
+
+  }
 
 
 

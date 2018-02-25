@@ -4,8 +4,8 @@
 \alias{ga_sessions_per_month}
 \title{GA Monthly sessions graphic}
 \usage{
-ga_sessions_per_month(data, title = "Sessions per month", x_title = "month",
-  y_title = "sessions", label_size = 4, bars_fill = "#F22439")
+ga_sessions_per_month(data, title, subtitle, x_title, y_title, label_size = 4,
+  bars_fill = "#F22439")
 }
 \arguments{
 \item{data}{a data frame from GA API. It must contain the column: ga:sourceMedium,

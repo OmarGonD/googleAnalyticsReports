@@ -20,20 +20,20 @@
 
 
 
-ga_get_sessions <- function(view_id, start_date = "2017-01-01",
-                            final_date = "2018-01-31") {
+ga_get_sessions <- function(view_id, start_date = "2018-01-01",
+                            final_date = "2018-01-31", language = "en") {
 
 
-  ga_auth()
+  gar_auth()
 
-  data <- google_analytics(my_id,
+  data <- google_analytics(view_id,
                            date_range = c(start_date, final_date),
                            metrics = "sessions",
                            dimensions = c("date", "hour", "deviceCategory", "sourceMedium"),
                            anti_sample = TRUE)
 
 
-  data <- googleAnalyticsReports::ga_clean_data_sessions(data)
+  data <- googleAnalyticsReports::ga_clean_data_sessions(data, language)
 
   return(data)
 

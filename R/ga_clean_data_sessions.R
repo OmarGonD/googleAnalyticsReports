@@ -21,7 +21,11 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
 
   data$sourceMedium <- sub("^(.+)www\\.(.+)\\.com.+","\\1\\2", data$sourceMedium)
 
-  data$month <- lubridate::month(data$date, label = T)
+  data$date <- as.Date(data$date)
+
+  data$anio <- lubridate::year(data$date)
+
+  data$mes <- lubridate::month(data$date, label = T)
 
 
 
@@ -70,16 +74,16 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
 
 
 
-    adwords.path <- paste(c("cpc", "search",
+    adwords.path <- paste(c("cpc", "search", "GoogleSearch",
                             "ccp","google_display",
-                            "cpm","cpv","youtube.*","video.*",
+                            "cpm","cpv",".*youtube.*","video.*",
                             "google", "google_blast","(not set)"),
                           collapse="|")
 
 
 
 
-    email.path <- paste(c(".*mail.*", "newsletter"
+    email.path <- paste(c(".*mail.*", "newsletter", 'outlook[.]live'
     ),
     collapse="|")
 
@@ -92,33 +96,40 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
                              ".*google\\.com\\.bo.*",
                              ".*google\\.com\\.ar.*",
                              ".*google\\.com\\.es.*",
-                             ".*google\\.com.*",
-                             "sodimac.com.pe",
-                             "falabella.com.pe",
-                             "larepublica.pe",
-                             "elpopular.pe",
-                             ".*toshiba.com",
-                             "visa-infinite.com",
-                             "ripley.com.pe",
-                             "cyberdays.net.pe",
-                             "nikonperu.com",
-                             "elpais.com",
-                             "latina.pe",
-                             "terra.com.pe",
-                             "los40.radio.es",
-                             "gestion.pe",
-                             "peruhardware.net",
-                             "peru21.pe",
-                             "samsung.com",
-                             "hyundaielectronics.com.pe",
-                             "beneficios.gruporomero.com.pe",
-                             "somosdata.net","shop.lenovo.com",
-                             "canonexperience.pe", "lg.com", "deperu.com"
+                             "sodimac\\.com\\.pe", "adonde\\.com",
+                             "falabella\\.com\\.pe", "taringa\\.net",
+                             "larepublica\\.pe", "panasonic\\.com",
+                             "elpopular\\.pe", "forosperu\\.net",
+                             ".*toshiba\\.com", "claroideas\\.com",
+                             "tiendeo\\.pe", "diariocorreo\\.pe",
+                             "messenger\\.com", "hp\\.com",
+                             "pricingcompass\\.com", "trome\\.pe",
+                             "visa-infinite\\.com", "atv\\.pe",
+                             "ripley\\.com\\.pe", "wapa\\.pe", "depor\\.com",
+                             "cyberdays\\.net\\.pe", "latinamerica\\.brother\\.com",
+                             "nikonperu\\.com", "keep\\.google\\.com",
+                             "elpais\\.com", "promociones\\.net\\.pe",
+                             "latina\\.pe", "carsa\\.com\\.pe",
+                             "zona\\.pagoefectivo\\.pe", "advanceperu\\.com",
+                             "picodi\\.com", "http\\:\\/\\/nssjaen\\.com\\/",
+                             "terra\\.com\\.pe", ".*blogspot\\.com",
+                             "los40\\.radio\\.es", "brother\\.com\\.pe",
+                             "gestion\\.pe", "getpocket\\.com",
+                             "peruhardware\\.net", "efe\\.com\\.pe",
+                             "peru21\\.pe", "cyberdays\\.pe",
+                             "samsung\\.com", "imacosa\\.com",
+                             "LaRepublica", "libero\\.pe", "hiraoka\\.com\\.pe",
+                             "hyundaielectronics\\.com\\.pe", "oster\\.com\\.pe",
+                             "beneficios\\.gruporomero\\.com\\.pe",
+                             "somosdata\\.net","shop\\.lenovo\\.com",
+                             "canonexperience\\.pe", "lg\\.com", "deperu\\.com"
     ),
     collapse="|")
 
 
     onesignal.path <- ".*OneSignal.*"
+
+    criteo.path <- ".*criteo.*"
 
 
     redes.sociales.path <- paste(c(".*fac?e.*",
@@ -137,8 +148,11 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
     ),
     collapse="|")
 
-    organic.path <- paste(c("start.iminent.com",".*search.*",
-                            "websearch.com","crawler.com|allmyweb.com"),
+    organic.path <- paste(c("start.iminent.com","\\.search.*", "zapmeta\\.pe",
+                            "duckduckgo\\.com", "izito\\.pe", "qwant\\.com",
+                            "findgofind\\.co", "teoma\\.com", "google\\.com.*",
+                            "bing\\.com", "smarter\\.com",
+                            "websearch.com","crawler.com|allmyweb.com", "google\\.es",  "ecosia\\.org"),
                           collapse="|")
 
 
@@ -157,6 +171,7 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
 
     adwords.source <- grepl(adwords.path,data$source[i], ignore.case = T)
 
+    criteo.source <- grepl(criteo.path,data$source[i], ignore.case = T)
 
     email.medium <- grepl(email.path,data$medium[i], ignore.case = T)
 
@@ -235,8 +250,17 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
       }
     }
 
+    else if (criteo.source) {
+      if (language == "en") {
+        data$sources[i] <- "criteo"
+      }
+      else if (language == "es") {
+        data$sources[i] <- "criteo"
+      }
+    }
 
-    else if (organic.medium) {
+
+    else if (organic.medium | organic) {
 
       if (language == "en") {
         data$sources[i] <- "organic"
@@ -246,11 +270,11 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
       }
     }
 
-    else if (organic) {
+    #else if (organic) {
 
-      data$sources[i] <- "organic"
+     # data$sources[i] <- "organic"
 
-    }
+    #}
 
     else if (adwords.source
              & adwords.medium) {
@@ -313,6 +337,11 @@ ga_clean_data_sessions <- function(data, language = "en", remove_spam = TRUE) {
   }
 
 
+  if(remove_spam) {
+
+    data <- data %>%
+            filter(sources != 'spam')
+  }
 
   return(data)
 

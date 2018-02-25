@@ -18,7 +18,7 @@ ga_get_pageviews <- function(view_id, start_date = start_date,
                              final_date = final_date) {
 
 
-  ga_auth()
+  gar_auth()
 
   data <- google_analytics(view_id,
                                date_range = c(start_date, final_date),
