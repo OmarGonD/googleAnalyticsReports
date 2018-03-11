@@ -41,6 +41,12 @@ ga_get_sessions_by_campaign <- function(view_id, start_date,
                              anti_sample = TRUE)
 
 
+
+    data <- googleAnalyticsReports::ga_clean_data_sessions(data, language)
+
+    data <- googleAnalyticsReports::ga_clean_data_adnetwork(data)
+
+
   } else {
 
 
@@ -55,6 +61,8 @@ ga_get_sessions_by_campaign <- function(view_id, start_date,
                                             "sourceMedium", "campaign", "adGroup"),
                              anti_sample = TRUE)
 
+    data <- googleAnalyticsReports::ga_clean_data_sessions(data, language)
+
 
 
   }
@@ -63,9 +71,6 @@ ga_get_sessions_by_campaign <- function(view_id, start_date,
 
 
 
-  data <- googleAnalyticsReports::ga_clean_data_sessions(data, language)
-
-  data <- googleAnalyticsReports::ga_clean_data_adnetwork(data)
 
   return(data)
 

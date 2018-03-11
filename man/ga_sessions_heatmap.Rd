@@ -4,8 +4,8 @@
 \alias{ga_sessions_heatmap}
 \title{GA Monthly heatmap graphic - sessions}
 \usage{
-ga_sessions_heatmap(data, title = "Weekday sessions by hour",
-  x_title = "hour", y_title = "", legend_title = "sessions",
+ga_sessions_heatmap(data, title = "Sesiones por día y hora de la semana",
+  x_title = "hora", y_title = "", legend_title = "sesiones",
   source = "all", label_size = 3)
 }
 \arguments{

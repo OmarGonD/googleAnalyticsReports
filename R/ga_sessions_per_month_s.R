@@ -50,7 +50,9 @@ ga_sessions_per_month_s <- function(data, title, subtitle, x_title, y_title, yea
     coord_flip() +
     geom_text(hjust = -0.4, size = label_size) +
     expand_limits(y = max(data$sessions) + round(max(data$sessions)*50/100)) +
-    theme_ipsum()
+    theme_ipsum() +
+    theme(legend.position = 'none')
+
 
   return(monthly_sessions_s)
 }

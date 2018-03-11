@@ -6,7 +6,7 @@
 \usage{
 ga_sessions_linechart(data,
   title = "Sessions by source - evolution by source", x_title = "date",
-  y_title = "sessions", label_size = 3)
+  y_title = "sessions", subtitle, label_size = 3)
 }
 \arguments{
 \item{data}{a data frame from GA API. It must contain the column: ga:sourceMedium,

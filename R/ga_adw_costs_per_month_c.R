@@ -10,14 +10,13 @@
 #' @import hrbrthemes
 #' @import scales
 #' @importFrom dplyr group_by summarise
-#' @importFrom forcats fct_reorder
 #' @importFrom magrittr %>%
 #' @examples ga_clean_data(my_data, language="es")
 #' @return The function returns the data frame with a new sources column with correct output ready to plot.
 #' @export
 
 ga_adw_cost_per_month_c <- function(data, adnetwork_selected, title, subtitle, x_title, y_title,
-                                    year_selected = 2018,
+                                    year_selected = 2018, bars_fill = "#FFBB33",
                                     label_size = 3, top_n = 5, y_axis_size = 16) {
 
 
@@ -43,7 +42,7 @@ ga_adw_cost_per_month_c <- function(data, adnetwork_selected, title, subtitle, x
 
 
   monthly_adw_cost_c <- ggplot(data_top_n, aes(x=campaign, y = adCost, label = comma(round(adCost, digits = 2)))) +
-                        geom_bar(stat = "identity", aes(fill = campaign)) +
+                        geom_bar(stat = "identity", fill = bars_fill, colour = "white") +
                         #facet_grid(month ~ adNetwork) +
                         facet_wrap(year ~ month, scales = "free_y", ncol = 1) +
                         labs(title = title, subtitle = subtitle,

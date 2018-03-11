@@ -4,9 +4,8 @@
 \alias{ga_lineschart_sessions_by_device}
 \title{GA Monthly linechart graphic - sessions}
 \usage{
-ga_lineschart_sessions_by_device(view_id, title = "Weekday sessions by hour",
-  x_title = "hour", y_title = "", legend_title = "sessions",
-  start_date = "2017-01-01", end_date = "2018-01-31", label_size = 3)
+ga_lineschart_sessions_by_device(view_id, title, subtitle, x_title, y_title,
+  legend_title = "sessions", start_date, end_date, label_size = 3)
 }
 \arguments{
 \item{data}{a data frame from GA API. It must contain the column: ga:sourceMedium,

@@ -16,14 +16,12 @@
 #' @return The function returns the data frame with a new sources column with correct output ready to plot.
 #' @export
 
-ga_sessions_linechart_by_source <- function(data, title, subtitle, x_title, y_title,
-                                    source, sources_details = F) {
+ga_sessions_linechart_by_source2 <- function(data, title, subtitle, x_title, y_title,
+                                            source, sources_details = F) {
 
 
 
-  from_to <- paste("Desde: ", min(data$date), "hasta: ", max(data$date))
 
-  subtitle <- paste(subtitle, " | ", from_to)
 
 
   if(sources_details) {
@@ -45,8 +43,8 @@ ga_sessions_linechart_by_source <- function(data, title, subtitle, x_title, y_ti
 
 
     linechart_sessions_by_source <- ggplot(data_others, aes(date, sessions, color = sources)) +
-      geom_line(alpha = 0.6, linetype = "longdash") +
-      geom_line(data = data_source, aes(date, sessions), colour="red", size = 0.8) +
+      geom_line(alpha = 0.6, linetype = "longdash", inherit.aes = FALSE) +
+      geom_line(data = data_source, aes(date, sessions), colour="red", size = 0.8, inherit.aes = FALSE) +
       labs(title = title, subtitle = subtitle,
            x = x_title, y = y_title) +
       theme(axis.text.x = element_text(colour="grey20",size=18,hjust=.5,vjust=.5,face="plain"),
@@ -172,16 +170,16 @@ ga_sessions_linechart_by_source <- function(data, title, subtitle, x_title, y_ti
     } else if(source == "organico") {
 
       data_source <- data %>%
-          select(date, sessions, sources) %>%
-          group_by(date, sources) %>%
-          summarise(sessions = sum(sessions)) %>%
-          filter(sources == "organico", !is.na(sessions))
+        select(date, sessions, sources) %>%
+        group_by(date, sources) %>%
+        summarise(sessions = sum(sessions)) %>%
+        filter(sources == "organico", !is.na(sessions))
 
-        data_others <- data %>%
-          select(date, sessions, sources) %>%
-          filter(sources != "organico", !is.na(sessions)) %>%
-          group_by(date) %>%
-          summarise(sessions = sum(sessions))
+      data_others <- data %>%
+        select(date, sessions, sources) %>%
+        filter(sources != "organico", !is.na(sessions)) %>%
+        group_by(date) %>%
+        summarise(sessions = sum(sessions))
 
     } else {
 
@@ -200,27 +198,27 @@ ga_sessions_linechart_by_source <- function(data, title, subtitle, x_title, y_ti
     }
 
 
-        linechart_sessions_by_source <- ggplot() +
-                                        geom_line(data = data_source, aes(date, sessions), colour="red") +
-                                        geom_line(data = data_others, aes(date, sessions), colour = "grey40") +
-                                        labs(title = title, subtitle = subtitle,
-                                             x = x_title, y = y_title) +
-                                        theme(axis.text.x = element_text(colour="grey20",size=18,hjust=.5,vjust=.5,face="plain"),
-                                              axis.text.y = element_text(colour="grey20",size=18,hjust=1,vjust=0,face="plain"),
-                                              axis.title.x = element_text(colour="grey20",size=12,angle=0,hjust=.5,vjust=0,face="plain"),
-                                              axis.title.y = element_text(colour="grey20",size=12,angle=90,hjust=.5,vjust=.5,face="plain"),
-                                              plot.title = element_text(face = "bold", vjust=2, size = 22),
-                                              legend.title = element_text(colour="grey40", size=8, face="bold"),
-                                              legend.text = element_text(colour="grey10", size=12, face="bold"),
-                                              strip.text.x = element_text(size = 22,
-                                                                          hjust = 0.5, vjust = 0.5)) +
-                                        scale_y_continuous(labels = comma) +
-                                        #geom_text(vjust = -0.4, size = label_size) +
-                                        expand_limits(y = max(data$sessions) + round(max(data$sessions)*50/100)) +
-                                        theme_ipsum()
+    linechart_sessions_by_source <- ggplot() +
+      geom_line(data = data_source, aes(date, sessions), colour="red", inherit.aes = FALSE) +
+      geom_line(data = data_others, aes(date, sessions), colour = "grey40", inherit.aes = FALSE) +
+      labs(title = title,
+           x = x_title, y = y_title) +
+      theme(axis.text.x = element_text(colour="grey20",size=18,hjust=.5,vjust=.5,face="plain"),
+            axis.text.y = element_text(colour="grey20",size=18,hjust=1,vjust=0,face="plain"),
+            axis.title.x = element_text(colour="grey20",size=12,angle=0,hjust=.5,vjust=0,face="plain"),
+            axis.title.y = element_text(colour="grey20",size=12,angle=90,hjust=.5,vjust=.5,face="plain"),
+            plot.title = element_text(face = "bold", vjust=2, size = 22),
+            legend.title = element_text(colour="grey40", size=8, face="bold"),
+            legend.text = element_text(colour="grey10", size=12, face="bold"),
+            strip.text.x = element_text(size = 22,
+                                        hjust = 0.5, vjust = 0.5)) +
+      scale_y_continuous(labels = comma) +
+      #geom_text(vjust = -0.4, size = label_size) +
+      expand_limits(y = max(data$sessions) + round(max(data$sessions)*50/100)) +
+      theme_ipsum()
 
-        return(linechart_sessions_by_source)
+    return(linechart_sessions_by_source)
 
-    }
+  }
 
 }

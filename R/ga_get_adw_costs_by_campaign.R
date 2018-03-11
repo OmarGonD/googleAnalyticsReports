@@ -31,51 +31,54 @@ ga_get_adw_costs_by_campaign <- function(view_id, start_date,
   data <- google_analytics(view_id,
                            date_range = c(start_date, final_date),
                            metrics = c("adCost"),
-                           dimensions = c("date", "adDistributionNetwork",
-                                          "sourceMedium", "campaign", "adGroup"),
-                           anti_sample = TRUE)
+                           dimensions = c("date"),
+                           anti_sample = FALSE)
 
+
+  #"sourceMedium",
+  #"adDistributionNetwork",
+  #"campaign"
 
   #We use ga_clean_data_sessions because of the "sourceMedium" dimension
-  data <- googleAnalyticsReports::ga_clean_data_sessions(data, language)
+  #data <- googleAnalyticsReports::ga_clean_data_sessions(data, language)
 
-
-  data$campaign <- gsub("LA CURACAO - ", "", data$campaign)
-
-  data$campaign <- gsub(" DSA - SEARCH -", "", data$campaign)
-
-  data$campaign <- gsub("SEARCH -", "", data$campaign)
-
-  data$campaign <- gsub("SEARCH -", "", data$campaign)
-
-  data$campaign <- gsub("- SEARCH", "", data$campaign)
-
-  data$campaign <- gsub("LaCuracao - GDN -", "", data$campaign)
-
-
-  data$campaign <- gsub("DISPLAY -", "", data$campaign)
-
-  data$campaign <- gsub("Brand/EM -", "", data$campaign)
-
-  data$campaign <- gsub("LaCuracao - Search - ", "", data$campaign)
-
-  data$campaign <- trimws(data$campaign, which = 'both')
+#
+#   data$campaign <- gsub("LA CURACAO - ", "", data$campaign)
+#
+#   data$campaign <- gsub(" DSA - SEARCH -", "", data$campaign)
+#
+#   data$campaign <- gsub("SEARCH -", "", data$campaign)
+#
+#   data$campaign <- gsub("SEARCH -", "", data$campaign)
+#
+#   data$campaign <- gsub("- SEARCH", "", data$campaign)
+#
+#   data$campaign <- gsub("LaCuracao - GDN -", "", data$campaign)
+#
+#
+#   data$campaign <- gsub("DISPLAY -", "", data$campaign)
+#
+#   data$campaign <- gsub("Brand/EM -", "", data$campaign)
+#
+#   data$campaign <- gsub("LaCuracao - Search - ", "", data$campaign)
+#
+#   data$campaign <- trimws(data$campaign, which = 'both')
 
   ## Cleaning adNetWorks
 
-  data$adNetwork <- ifelse(grepl("Google Search|Search partners",
-                                 data$adDistributionNetwork), "Google Search", data$adDistributionNetwork)
-
-
-  data$adNetwork <- ifelse(grepl("Content",
-                                 data$adDistributionNetwork), "Google Display", data$adNetwork)
-
+  # data$adNetwork <- ifelse(grepl("Google Search|Search partners",
+  #                                data$adDistributionNetwork), "Google Search", data$adDistributionNetwork)
+  #
+  #
+  # data$adNetwork <- ifelse(grepl("Content",
+  #                                data$adDistributionNetwork), "Google Display", data$adNetwork)
+  #
 
 
 
   message("#=========================================#")
   message("Returns Adwords data (as metric is adCost)")
-  message(paste("Sources of data:",unique(data$sources)))
+  #message(paste("Sources of data:",unique(data$sources)))
   message("#=========================================#")
 
   return(data)

@@ -22,12 +22,16 @@
 
 
 
-ga_lineschart_sessions_by_device <- function(view_id, title = "Weekday sessions by hour", x_title = "hour", y_title = "",
-                                      legend_title = "sessions", start_date = "2017-01-01",end_date = "2018-01-31",
+ga_lineschart_sessions_by_device <- function(view_id, title, subtitle, x_title, y_title,
+                                      legend_title = "sessions", start_date, end_date,
                                       label_size = 3) {
 
 
   gar_auth()
+
+  from_to <- paste("Desde: ", min(data$date), "hasta: ", max(data$date))
+
+  subtitle <- paste(subtitle, " | ", from_to)
 
   data <- google_analytics(viewId = view_id,
                                 date_range = c(start_date, end_date),
@@ -38,7 +42,10 @@ ga_lineschart_sessions_by_device <- function(view_id, title = "Weekday sessions 
 
   gg <- ggplot(data, mapping = aes(x = date, y = sessions, colour = deviceCategory)) +
     geom_line() +
-    theme_ipsum()
+    theme_ipsum() +
+    labs(title = title, subtitle = subtitle,
+         x = x_title, y = y_title)
+
 
   return(gg)
 

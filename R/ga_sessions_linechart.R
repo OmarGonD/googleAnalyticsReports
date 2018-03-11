@@ -17,9 +17,13 @@
 #' @export
 
 ga_sessions_linechart <- function(data, title = "Sessions by source - evolution by source", x_title = "date", y_title = "sessions",
-                                    label_size = 3) {
+                                   subtitle,  label_size = 3) {
 
   data$date <- as.Date(data$date)
+
+  from_to <- paste("Desde: ", min(data$date), "hasta: ", max(data$date))
+
+  subtitle <- paste(subtitle, " | ", from_to)
 
   data_line <- data %>%
     group_by(date, sources) %>%
@@ -30,7 +34,8 @@ ga_sessions_linechart <- function(data, title = "Sessions by source - evolution 
                      geom_line() +
                      theme_ipsum() +
                      scale_color_ipsum() +
-                     labs(title = title, x = x_title, y = y_title)
+                     labs(title = title, subtitle = subtitle,
+                          x = x_title, y = y_title)
 
 
   return(data_line_chart)

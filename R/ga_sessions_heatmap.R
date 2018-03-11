@@ -22,8 +22,9 @@
 
 
 
-ga_sessions_heatmap <- function(data, title = "Weekday sessions by hour", x_title = "hour", y_title = "",
-                                    legend_title = "sessions", source = 'all', label_size = 3) {
+ga_sessions_heatmap <- function(data, title = "Sesiones por día y hora de la semana", x_title = "hora", y_title = "",
+                                    legend_title = "sesiones", source = 'all', label_size = 3) {
+
 
 
   allHours <- function(data) {
@@ -31,8 +32,29 @@ ga_sessions_heatmap <- function(data, title = "Weekday sessions by hour", x_titl
                sessions = sapply(1:23, function(x) sum(data$sessions[data$hour == x])))
   }
 
-
   data$day <- weekdays(data$date, abbreviate = T)
+
+  data <- data %>%
+    mutate(hour = as.numeric(hour)) %>%
+    group_by(day, hour, sources) %>%
+    do(allHours(.)) %>%
+    summarise(sessions = sum(sessions))
+
+
+  if (source != 'all') {
+    data <- data %>%
+            filter(sources == source)
+
+  } else {
+
+    data <- data
+  }
+
+  all_sessions <- sum(data$sessions)
+
+  subtitle <- paste("              Total sesiones: ", comma(all_sessions))
+
+
 
   if (grepl("LC_CTYPE=es", Sys.getlocale())) {
 
@@ -48,27 +70,6 @@ ga_sessions_heatmap <- function(data, title = "Weekday sessions by hour", x_titl
   }
 
 
-  if(source == 'all') {
-
-    data <- data %>%
-      mutate(hour = as.numeric(hour)) %>%
-      group_by(day, hour) %>%
-      do(allHours(.)) %>%
-      summarise(sessions = sum(sessions))
-
-  } else {
-
-    data <- data %>%
-      filter(sources == source) %>%
-      mutate(hour = as.numeric(hour)) %>%
-      group_by(day, hour) %>%
-      do(allHours(.)) %>%
-      summarise(sessions = sum(sessions))
-
-  }
-
-
-
 
   # data$month <- factor(data$month, levels = c("nov", "dec"), ordered = T)
 
@@ -78,7 +79,7 @@ ga_sessions_heatmap <- function(data, title = "Weekday sessions by hour", x_titl
   gg <- gg + geom_tile(color="white", size=0.1)
   gg <- gg + scale_fill_viridis(name= paste("#", legend_title), label=comma)
   gg <- gg + coord_equal()
-  gg <- gg + labs(x=x_title, y=y_title, title=title)
+  gg <- gg + labs(title=title, subtitle = subtitle, x=x_title, y=y_title)
   gg <- gg + theme_tufte(base_family="Helvetica")
   gg <- gg + theme(plot.title=element_text(hjust=0.1))
   gg <- gg + theme(axis.ticks=element_blank())
