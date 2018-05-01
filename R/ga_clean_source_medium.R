@@ -12,7 +12,7 @@
 #' @return The function returns the data frame with a new sources column with correct output ready to plot.
 #' @export
 
-ga_clean_source_medium <- function(data, language = "es", remove_spam = TRUE) {
+ga_clean_source_medium <- function(data, language = "es", remove_spam = FALSE) {
 
 
   #data$sourceMedium <- sub('.*www.', "", data$sourceMedium)
