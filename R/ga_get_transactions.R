@@ -20,8 +20,8 @@
 
 
 
-ga_get_sessions <- function(view_id, start_date,
-                            final_date, language = "en") {
+ga_get_transactions <- function(view_id, start_date,
+                            final_date, language = "es") {
 
 
   gar_auth()
@@ -29,7 +29,7 @@ ga_get_sessions <- function(view_id, start_date,
 
   data <- google_analytics(view_id,
                            date_range = c(start_date, final_date),
-                           metrics = "sessions",
+                           metrics = "transactions",
                            dimensions = c("date", "hour", "deviceCategory", "sourceMedium"),
                            anti_sample = TRUE)
 
