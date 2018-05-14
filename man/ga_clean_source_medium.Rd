@@ -4,7 +4,7 @@
 \alias{ga_clean_source_medium}
 \title{Cleans GA Data}
 \usage{
-ga_clean_source_medium(data, language = "es", remove_spam = TRUE)
+ga_clean_source_medium(data, language = "es", remove_spam = FALSE)
 }
 \arguments{
 \item{data}{a data frame from GA API. It must contain the column: ga:sourceMedium,

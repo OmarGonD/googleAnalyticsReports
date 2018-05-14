@@ -34,25 +34,37 @@ ga_sessions_heatmap <- function(data, title = "Sesiones por día y hora de la se
 
   data$day <- weekdays(data$date, abbreviate = T)
 
-  data <- data %>%
-    mutate(hour = as.numeric(hour)) %>%
-    group_by(day, hour, sources) %>%
-    do(allHours(.)) %>%
-    summarise(sessions = sum(sessions))
+
 
 
   if (source != 'all') {
+
+
     data <- data %>%
             filter(sources == source)
 
+    data <- data %>%
+      mutate(hour = as.numeric(hour)) %>%
+      group_by(day, hour, sources) %>%
+      do(allHours(.)) %>%
+      summarise(sessions = sum(sessions))
+
   } else {
 
-    data <- data
+    data <- data %>%
+      mutate(hour = as.numeric(hour)) %>%
+      group_by(day, hour) %>%
+      do(allHours(.)) %>%
+      summarise(sessions = sum(sessions))
   }
 
   all_sessions <- sum(data$sessions)
+  min_sessions <- min(data$sessions)
+  max_sessions <- max(data$sessions)
 
-  subtitle <- paste("              Total sesiones: ", comma(all_sessions))
+  subtitle <- paste("Total sesiones: ", comma(all_sessions), " | ",
+                    "Máx sesiones: ", comma(max_sessions), " | ",
+                    "Mín sesiones: ", comma(min_sessions))
 
 
 
@@ -85,6 +97,7 @@ ga_sessions_heatmap <- function(data, title = "Sesiones por día y hora de la se
   gg <- gg + theme(axis.ticks=element_blank())
   gg <- gg + theme(axis.text=element_text(size=12))
   gg <- gg + theme(legend.title=element_text(size=10))
+  gg <- gg + theme(plot.subtitle=element_text(size=10, hjust=0.5, face="italic", color="black"))
   gg <- gg + theme(legend.text=element_text(size=8))
   gg
 
