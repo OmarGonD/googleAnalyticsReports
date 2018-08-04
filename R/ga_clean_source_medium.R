@@ -82,12 +82,19 @@ ga_clean_source_medium <- function(data, language = "es", remove_spam = FALSE) {
 
 
 
+    ccl.path <- "CCL$"
+
+    criteo.path <- ".*criteo.*"
 
     email.path <- paste(c(".*mail.*", "newsletter", 'outlook[.]live'
     ),
     collapse="|")
 
+    facebookads.path <- paste(c("Facebook", "cpc"),
+                        collapse="|")
 
+    facebookreferral.path <- paste(c("facebook", "referral"),
+                              collapse="|")
 
 
     referral.path <- paste(c(".*google\\.com\\.pe.*",
@@ -129,11 +136,10 @@ ga_clean_source_medium <- function(data, language = "es", remove_spam = FALSE) {
 
     onesignal.path <- ".*OneSignal.*"
 
-    criteo.path <- ".*criteo.*"
 
 
-    redes.sociales.path <- paste(c(".*fac?e.*",
-                                   ".*twitt?.*","tw.*", "pp.*", ".*instagram.*"),
+
+    redes.sociales.path <- paste(c(".*twitt?.*","tw.*", "pp.*", ".*instagram.*"),
                                  collapse="|")
 
 
@@ -180,12 +186,21 @@ ga_clean_source_medium <- function(data, language = "es", remove_spam = FALSE) {
 
     adwords.source <- grepl(adwords.path,data$source[i], ignore.case = T)
 
+    ccl.source <- grepl(ccl.path,data$source[i], ignore.case = T)
+
     criteo.source <- grepl(criteo.path,data$source[i], ignore.case = T)
 
     email.medium <- grepl(email.path,data$medium[i], ignore.case = T)
 
     email.source <- grepl(email.path,data$source[i], ignore.case = T)
 
+    facebookads.medium <- grepl(facebookads.path,data$medium[i], ignore.case = T)
+
+    facebookads.source <- grepl(facebookads.path,data$source[i], ignore.case = T)
+
+    facebookreferral.medium <- grepl(facebookreferral.path,data$medium[i], ignore.case = T)
+
+    facebookreferral.source <- grepl(facebookreferral.path,data$source[i], ignore.case = T)
 
     referral.medium <- grepl("referral", data$medium[i],
                              ignore.case = T)
@@ -223,8 +238,6 @@ ga_clean_source_medium <- function(data, language = "es", remove_spam = FALSE) {
 
 
     onesignal.source <- grepl(onesignal.path,data$source[i], ignore.case = T)
-
-
 
 
     otros <- grepl(otros.path, data$medium[i], ignore.case = T)
@@ -278,13 +291,16 @@ ga_clean_source_medium <- function(data, language = "es", remove_spam = FALSE) {
       }
     }
 
+    else if (ccl.source) {
+
+      data$sources[i] <- "ccl"
+
+    }
+
     else if (criteo.source) {
-      if (language == "en") {
+
         data$sources[i] <- "criteo"
-      }
-      else if (language == "es") {
-        data$sources[i] <- "criteo"
-      }
+
     }
 
 
@@ -298,28 +314,20 @@ ga_clean_source_medium <- function(data, language = "es", remove_spam = FALSE) {
       }
     }
 
-    #else if (organic) {
-
-    # data$sources[i] <- "organic"
-
-    #}
 
     else if (adwords.source
              & adwords.medium) {
 
-      if (language == "en") {
         data$sources[i] <- "adwords"
-      }
-      else if (language == "es") {
-        data$sources[i] <- "adwords"
-      }
     }
+
+
 
 
 
     else if (adsense) {
 
-      data$sources[i] <- "adsense"
+      data$sources[i] <- "referencias"
     }
 
 
@@ -328,6 +336,26 @@ ga_clean_source_medium <- function(data, language = "es", remove_spam = FALSE) {
       data$sources[i] <- "email"
     }
 
+
+    else if (facebookads.source
+             & facebookads.medium) {
+
+      data$sources[i] <- "facebookads"
+    }
+
+    else if (facebookreferral.source
+             & facebookreferral.medium) {
+
+      if (language == "en") {
+        data$sources[i] <- "referrals"
+      }
+
+      else if (language == "es") {
+
+        data$sources[i] <- "referencias"
+
+        }
+    }
 
 
     else if (redes.sociales) {
